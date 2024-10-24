@@ -340,6 +340,7 @@ Alternatively, we can use tmap a way to create maps using R
 
 ```{r}
 library(tmap)
+tmap_mode("plot")
 ## Add the data - these are specific to the vector or raster
 tm_shape(boulder) + 
   ## which variable, is there a class interval, palette, and other options

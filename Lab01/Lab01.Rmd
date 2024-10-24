@@ -5,8 +5,50 @@ date: "2024-10-24"
 output: html_document
 ---
 
-the first R chunk
+### the first test R chunk, import packages and see the data
 ```{r}
+library(ggplot2)
+library(sf)
+library(tidyverse)
 
+library(ggspatial)
+library(viridis)
+
+boulder <- st_read("./BoulderSocialMedia/BoulderSocialMedia.shp")
+
+head(boulder)
 ```
 
+### Add a new distance category column
+```{r}
+boulder <- boulder %>%
+    mutate(Distance_Category = case_when(
+        Street_dis < 500 ~ "near",
+        Street_dis >= 500 & Street_dis <= 1000 ~ "middle",
+        Street_dis > 1000 ~ "far"
+    ))
+```
+
+
+
+### Display the distribution of points of different distance categories on the map
+```{r}
+ggplot() +
+    geom_sf(data = boulder, aes(color = Distance_Category), alpha = 0.6) +
+    theme_minimal() +
+    labs(title = "Shooting locations by road distance category in Boulder",
+         color = "Distance category")
+```
+### Better understand the relationship between elevation and distance
+```{r}
+# Boxplot of elevation vs. distance categories
+ggplot(boulder, aes(x = Distance_Category, y = PT_Elev)) +
+    geom_boxplot() +
+    theme_classic() +
+    labs(title = "Elevation distribution of locations in different road distance categories",
+         x = "Distance category",
+         y = "Altitude (m)")
+```
+> Advantages: The core of open science is to increase the transparency of experimental methods, data and results (Adv_LabLecture). By opening up data and methods, researchers can effectively share knowledge and collaborate, improve the reusability of data and the verifiability of scientific results. In addition, open science also helps to increase public transparency, making the research process and results more understandable and accessible to the general public. This approach allows more people to participate in the scientific process and helps accelerate scientific progress.
+
+> Challenges: Although open data science provides significant advantages, it also faces some challenges. Data privacy is a key issue, especially when it comes to data with sensitive personal information. In addition, researchers may worry that open data will bring unfair competition, such as other researchers publishing related results first after the data is made public. Data management and storage are also practical challenges in open science, requiring additional time and cost to ensure data quality and compliance.
