@@ -1,0 +1,12 @@
+---
+title: "Lab01"
+author: "aohuat"
+date: "2024-10-24"
+output: html_document
+---
+
+the first R chunk
+```{r}
+
+```
+
